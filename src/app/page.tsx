@@ -268,7 +268,7 @@ export default function Home() {
               >
                 <div className="relative h-64 mb-4 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center">
                   <Image
-                    src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=90"
+                    src="/Jenkins.png"
                     alt="CI/CD Pipeline"
                     fill
                     className="object-cover"
@@ -290,7 +290,7 @@ export default function Home() {
               >
                 <div className="relative h-64 mb-4 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center">
                   <Image
-                    src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=90"
+                    src="/Kube.png"
                     alt="Azure DevOps"
                     fill
                     className="object-cover"
@@ -311,8 +311,8 @@ export default function Home() {
               >
                 <div className="relative h-64 mb-4 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center">
                   <Image
-                    src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=90"
-                    alt="Migration Project - Cloud Data Transfer"
+                    src="/Migration.png"
+                    alt="Migration Project"
                     fill
                     className="object-cover"
                   />
@@ -328,8 +328,8 @@ export default function Home() {
               >
                 <div className="relative h-64 mb-4 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center">
                   <Image
-                    src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=90"
-                    alt="Azure Infrastructure Solutions - Data Center"
+                    src="/azure.png"
+                    alt="Azure Infrastructure Solutions"
                     fill
                     className="object-cover"
                   />
