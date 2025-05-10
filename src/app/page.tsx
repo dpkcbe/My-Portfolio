@@ -239,7 +239,7 @@ export default function Home() {
               <div className="card">
                 <h3 className="text-xl font-semibold mb-4 text-white">Additional Skills</h3>
                 <div className="flex flex-wrap">
-                  {['VMware', 'Nutanix', 'Commvault', 'Veeam', 'Gen AI', 'LLMs'].map((skill) => (
+                  {['VMware', 'Nutanix', 'Commvault', 'Veeam', 'Gen AI', 'LLMs', 'Prompt Engineering', 'Gemini', 'ChatGPT', 'Claude', 'Cursor'].map((skill) => (
                     <span key={skill} className="skill-badge bg-[#e5decf] text-black">{skill}</span>
                   ))}
                 </div>
