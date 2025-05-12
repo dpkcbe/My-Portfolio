@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaMicrosoft, FaDocker, FaGithub, FaJenkins, FaEnvelope, FaPhone, FaLinkedin, FaTwitter, FaDownload } from 'react-icons/fa';
 import { SiKubernetes, SiAnsible, SiTerraform, SiVmware } from 'react-icons/si';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -11,10 +12,37 @@ const fadeIn = {
   transition: { duration: 0.5 }
 };
 
+const NAV_ITEMS = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'contact', label: 'Contact' },
+];
+
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = NAV_ITEMS.map(item => item.id);
+      const scrollPosition = window.scrollY + 100;
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -27,18 +55,20 @@ export default function Home() {
     <main className="min-h-screen section-gradient">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 glass-effect">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container-custom py-4">
           <div className="flex justify-between items-center">
             <div className="hidden md:flex space-x-6">
-              {['About', 'Skills', 'Projects', 'Certifications', 'Contact'].map((item) => (
+              {NAV_ITEMS.map((item) => (
                 <motion.button
-                  key={item}
+                  key={item.id}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => scrollToSection(item.toLowerCase())}
-                  className="text-gray-300 hover:text-[#e5decf] transition-colors"
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-gray-300 hover:text-[#e5decf] transition-colors ${
+                    activeSection === item.id ? 'text-primary-600' : ''
+                  }`}
                 >
-                  {item}
+                  {item.label}
                 </motion.button>
               ))}
             </div>
@@ -54,61 +84,68 @@ export default function Home() {
               >
                 <FaLinkedin />
               </motion.a>
-              <motion.button
-                onClick={() => window.open('/Deepak_resume.pdf', '_blank')}
-                className="button-primary bg-[#e5decf] text-black hover:bg-[#d6cdbb]"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <a
+                href="/Deepak_2025_Resume.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button-primary bg-[#e5decf] text-black hover:bg-[#d6cdbb] px-4 py-2 text-sm flex items-center"
               >
                 <FaDownload className="mr-2" />
                 Download CV
-              </motion.button>
+              </a>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="section-padding hero-gradient text-white relative overflow-hidden min-h-screen flex items-center pt-32">
+      <section id="home" className="section-padding hero-gradient text-white relative overflow-hidden min-h-screen flex items-center pt-32">
         <motion.div 
           className="absolute inset-0 glass-effect"
           style={{ opacity, scale }}
         />
-        <div className="container mx-auto container-padding relative z-10">
+        <div className="container-custom relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
             >
               <motion.h1 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.1 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2 text-white leading-tight break-words"
               >
-                Deepak Radhakrishnan
+                <span className="block mb-2">Deepak</span>
+                <span className="block mt-2">Radhakrishnan</span>
               </motion.h1>
               <motion.h2 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2 }}
                 className="text-3xl md:text-4xl font-bold mb-6 text-[#e5decf]"
               >
-                DevOps Engineer & Cloud Specialist
+                DevOps & Cloud Enthusiast | AI Generalist
               </motion.h2>
               <motion.p 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.3 }}
                 className="text-xl md:text-2xl text-gray-300 mb-8"
               >
                 Building robust cloud infrastructure and automating deployment pipelines
               </motion.p>
               <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.4 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
                 <motion.button
@@ -131,8 +168,9 @@ export default function Home() {
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.5 }}
               className="relative"
             >
               <div className="flex justify-center items-center mb-8">
@@ -152,22 +190,32 @@ export default function Home() {
 
       {/* About Section */}
       <section id="about" className="section-padding pt-8 scroll-mt-16 flex justify-start">
-        <div className="container mx-auto container-padding">
+        <div className="container-custom">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="section-title gradient-text">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="section-title gradient-text"
+            >
               About Me
-            </h2>
+            </motion.h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="card">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="card"
+              >
                 <p className="text-gray-300 text-lg leading-relaxed">
-                  I am a passionate DevOps Engineer with expertise in cloud infrastructure and automation. 
-                  With a strong foundation in both development and operations, I specialize in creating 
-                  efficient CI/CD pipelines and managing cloud resources effectively.
+                DevOps Engineer with a focus on cloud infrastructure, automation, and reliability. I build efficient CI/CD pipelines, manage scalable environments, and recently began exploring Generative AI to enhance workflow automation and productivity.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
@@ -183,14 +231,20 @@ export default function Home() {
                     <span className="text-gray-300">Automation Expert</span>
                   </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                className="grid grid-cols-2 gap-4"
+              >
                 <div className="card text-center">
                   <h3 className="text-4xl font-bold text-[#e5decf] mb-2">4.8+</h3>
                   <p className="text-gray-300">Years Experience</p>
                 </div>
                 <div className="card text-center">
-                  <h3 className="text-4xl font-bold text-[#e5decf] mb-2">50+</h3>
+                  <h3 className="text-4xl font-bold text-[#e5decf] mb-2">10+</h3>
                   <p className="text-gray-300">Projects Completed</p>
                 </div>
                 <div className="card text-center">
@@ -201,7 +255,7 @@ export default function Home() {
                   <h3 className="text-4xl font-bold text-[#e5decf] mb-2">100%</h3>
                   <p className="text-gray-300">Client Satisfaction</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -209,21 +263,27 @@ export default function Home() {
 
       {/* Skills Section */}
       <section id="skills" className="section-padding pt-20 scroll-mt-24 flex items-center min-h-[80vh]">
-        <div className="container mx-auto container-padding">
+        <div className="container-custom">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="section-title gradient-text">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="section-title gradient-text"
+            >
               Technical Skills
-            </h2>
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="card">
                 <h3 className="text-xl font-semibold mb-4 text-white">DevOps Tools</h3>
                 <div className="flex flex-wrap">
-                  {['Azure DevOps', 'Docker', 'Jenkins', 'Kubernetes', 'GitHub', 'Ansible', 'Terraform'].map((skill) => (
+                  {['Azure DevOps', 'Docker', 'Jenkins', 'Kubernetes', 'GitHub', 'Ansible', 'Terraform', 'Azure Pipelines', 'Azure Repos'].map((skill) => (
                     <span key={skill} className="skill-badge bg-[#e5decf] text-black">{skill}</span>
                   ))}
                 </div>
@@ -231,7 +291,8 @@ export default function Home() {
               <div className="card">
                 <h3 className="text-xl font-semibold mb-4 text-white">Cloud Platforms</h3>
                 <div className="flex flex-wrap">
-                  {['AWS', 'Microsoft Azure', 'EC2', 'VPC', 'EKS', 'IAM', 'S3'].map((skill) => (
+                  {['AWS', 'Microsoft Azure', 'EC2', 'VPC', 'EKS', 'IAM', 'S3',
+                    'Microsoft Entra ID', 'AKS', 'ACR', 'ECR', 'Azure VMs', 'Azure Vnets', 'Azure Storage'].map((skill) => (
                     <span key={skill} className="skill-badge bg-[#e5decf] text-black">{skill}</span>
                   ))}
                 </div>
@@ -250,17 +311,23 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="section-padding pt-20 scroll-mt-24 flex items-center min-h-[80vh]">
-        <div className="container mx-auto container-padding">
+      <section id="projects" className="section-padding pt-14 scroll-mt-16 flex items-center min-h-[80vh]">
+        <div className="container-custom">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="section-title gradient-text">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="section-title gradient-text"
+            >
               Featured Projects
-            </h2>
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.div
                 whileHover={{ y: -10 }}
@@ -346,16 +413,22 @@ export default function Home() {
 
       {/* Certifications Section */}
       <section id="certifications" className="section-padding pt-20 scroll-mt-24 flex items-center min-h-[80vh]">
-        <div className="container mx-auto container-padding">
+        <div className="container-custom">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="section-title gradient-text">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="section-title gradient-text"
+            >
               Certifications
-            </h2>
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="card">
                 <div className="flex items-center gap-4">
@@ -410,14 +483,20 @@ export default function Home() {
       <section className="section-padding pt-20 scroll-mt-24 flex items-center min-h-[80vh]">
         <div className="container mx-auto container-padding">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="section-title gradient-text">
-              Achievements
-            </h2>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="section-title gradient-text"
+            >
+              Achievements & Awards
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="card text-center">
                 <div className="w-20 h-20 rounded-full bg-[#e5decf]/10 flex items-center justify-center mx-auto mb-4">
@@ -449,15 +528,21 @@ export default function Home() {
       <section id="contact" className="section-padding pt-20 scroll-mt-24 flex items-center min-h-[80vh]">
         <div className="container mx-auto container-padding">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
             className="max-w-2xl mx-auto"
           >
-            <h2 className="section-title gradient-text">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="section-title gradient-text"
+            >
               Contact Me
-            </h2>
+            </motion.h2>
             <div className="card">
               <div className="space-y-6">
                 <motion.div
@@ -483,7 +568,7 @@ export default function Home() {
                   <div>
                     <h3 className="text-lg font-semibold mb-1 text-white">Phone</h3>
                     <a 
-                      href="tel:+919952618445"
+                      href="tel:+91 9952618445"
                       className="contact-text"
                     >
                       +91 9952618445
@@ -499,11 +584,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-8 glass-effect">
         <div className="container mx-auto container-padding">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-300 mb-4 md:mb-0">
-              © 2024 Deepak Radhakrishnan. All rights reserved.
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-gray-300 mb-0 text-center">
+              © 2025 Deepak Radhakrishnan. All rights reserved.
             </div>
-            {/* Social icons removed from footer as per user request */}
           </div>
         </div>
       </footer>
