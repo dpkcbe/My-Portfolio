@@ -215,7 +215,7 @@ export default function Home() {
                 className="card"
               >
                 <p className="text-gray-300 text-lg leading-relaxed">
-                DevOps Engineer with a focus on cloud infrastructure, automation, and reliability. I build efficient CI/CD pipelines, manage scalable environments, and recently began exploring Generative AI to enhance workflow automation and productivity.
+                Aspiring DevOps Engineer with a focus on cloud infrastructure, automation, and reliability. I build efficient CI/CD pipelines, manage scalable environments, and recently began exploring Generative AI to enhance workflow automation and productivity.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
