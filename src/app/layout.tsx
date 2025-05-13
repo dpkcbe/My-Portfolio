@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <head>
+        <link rel="icon" href="/favicon_32x32.png" sizes="32x32" />
+      </head>
       <body className="bg-white dark:bg-gray-900">
         {children}
       </body>
