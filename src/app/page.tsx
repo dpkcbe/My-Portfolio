@@ -24,6 +24,9 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
   const [activeSection, setActiveSection] = useState('home');
+  // Tooltip state for certifications
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });
+  const [downloadUrl, setDownloadUrl] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +52,23 @@ export default function Home() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  // Handler for showing tooltip
+  const handleCertMouseMove = (e: React.MouseEvent) => {
+    setTooltip({ visible: true, x: e.clientX + 12, y: e.clientY + 12 });
+  };
+  const handleCertMouseLeave = () => {
+    setTooltip({ visible: false, x: 0, y: 0 });
+  };
+  // Handler for download
+  const handleCertClick = (pdf: string) => {
+    const link = document.createElement('a');
+    link.href = `/${pdf}`;
+    link.download = pdf;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -430,10 +450,15 @@ export default function Home() {
               Certifications
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="card">
+              <div
+                className="card cursor-pointer"
+                onMouseMove={handleCertMouseMove}
+                onMouseLeave={handleCertMouseLeave}
+                onClick={() => handleCertClick('AZ-400_Cert.pdf')}
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-[#e5decf]/10 flex items-center justify-center">
-                    <FaMicrosoft className="text-3xl text-[#e5decf]" />
+                    <Image src="/Microsoft-logo.png" alt="Microsoft Logo" width={40} height={40} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-white">Microsoft Azure DevOps Engineer (AZ-400)</h3>
@@ -441,10 +466,15 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="card">
+              <div
+                className="card cursor-pointer"
+                onMouseMove={handleCertMouseMove}
+                onMouseLeave={handleCertMouseLeave}
+                onClick={() => handleCertClick('AZ-104_Cert.pdf')}
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-[#e5decf]/10 flex items-center justify-center">
-                    <FaMicrosoft className="text-3xl text-[#e5decf]" />
+                    <Image src="/Microsoft-logo.png" alt="Microsoft Logo" width={40} height={40} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-white">Azure Administrator Associate (AZ-104)</h3>
@@ -452,10 +482,15 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="card">
+              <div
+                className="card cursor-pointer"
+                onMouseMove={handleCertMouseMove}
+                onMouseLeave={handleCertMouseLeave}
+                onClick={() => handleCertClick('DevOps_Training_Cert.pdf')}
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-[#e5decf]/10 flex items-center justify-center">
-                    <FaDocker className="text-3xl text-[#e5decf]" />
+                    <Image src="/intellipaat-logo.png" alt="Intellipaat Logo" width={40} height={40} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-white">DevOps Training</h3>
@@ -463,10 +498,15 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="card">
+              <div
+                className="card cursor-pointer"
+                onMouseMove={handleCertMouseMove}
+                onMouseLeave={handleCertMouseLeave}
+                onClick={() => handleCertClick('intellipaat-certificate.pdf')}
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-[#e5decf]/10 flex items-center justify-center">
-                    <FaMicrosoft className="text-3xl text-[#e5decf]" />
+                    <Image src="/intellipaat-logo.png" alt="Intellipaat Logo" width={40} height={40} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-white">Azure Administrator Course (AZ-103/AZ-104)</h3>
@@ -474,7 +514,44 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+              <div
+                className="card cursor-pointer"
+                onMouseMove={handleCertMouseMove}
+                onMouseLeave={handleCertMouseLeave}
+                onClick={() => handleCertClick('Outskill_GenAI_cert.pdf')}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-[#e5decf]/10 flex items-center justify-center">
+                    <Image src="/outskill-logo.avif" alt="Outskill Logo" width={40} height={40} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2 text-white">Generative AI Mastermind</h3>
+                    <p className="text-gray-300">Outskill</p>
+                  </div>
+                </div>
+              </div>
             </div>
+            {/* Tooltip for certifications */}
+            {tooltip.visible && (
+              <div
+                style={{
+                  position: 'fixed',
+                  left: tooltip.x,
+                  top: tooltip.y,
+                  zIndex: 1000,
+                  pointerEvents: 'none',
+                  background: 'rgba(0,0,0,0.85)',
+                  color: '#e5decf',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                }}
+              >
+                Click to view the certificate
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
